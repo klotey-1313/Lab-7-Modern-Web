@@ -14,6 +14,14 @@ export class DocumentService {
     );
   }
 
+  async getLastVisited(): Promise<any | null> {
+    const response: any = await firstValueFrom(
+      this.http.get(`${this.apiUrl}/last-visited`, { withCredentials: true })
+    );
+
+    return response.lastVisitedDocument;
+  }
+
   async getById(id: string): Promise<any> {
     return await firstValueFrom(
       this.http.get(`${this.apiUrl}/${id}`, { withCredentials: true })

@@ -9,6 +9,18 @@ const toDocumentResponse = (document) => ({
   lastUpdatedDate: document.lastUpdatedDate ?? document.updatedAt
 });
 
+const toLastVisitedResponse = (lastVisitedDocument) => {
+  if (!lastVisitedDocument) {
+    return null;
+  }
+
+  return {
+    documentId: lastVisitedDocument.documentId,
+    title: lastVisitedDocument.title,
+    reviewedAt: lastVisitedDocument.reviewedAt
+  };
+};
+
 export const createDocument = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -57,7 +69,19 @@ export const getDocuments = async (req, res) => {
   }
 };
 
+export const getLastVisitedDocument = async (req, res) => {
+  return res.status(200).json({
+    lastVisitedDocument: toLastVisitedResponse(req.session.lastVisitedDocument)
+  });
+};
+
 export const getDocumentById = async (req, res) => {
+  req.session.lastVisitedDocument = {
+    documentId: req.document._id.toString(),
+    title: req.document.title,
+    reviewedAt: new Date().toISOString()
+  };
+
   return res.status(200).json(toDocumentResponse(req.document));
 };
 

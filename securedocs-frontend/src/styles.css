@@ -338,6 +338,16 @@ a:hover {
   text-align: center;
 }
 
+.dashboard-note {
+  margin-top: 18px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.dashboard-note strong {
+  color: var(--text);
+}
+
 @media (max-width: 900px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

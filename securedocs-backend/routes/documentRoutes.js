@@ -2,6 +2,7 @@ import express from 'express';
 import {
   createDocument,
   getDocuments,
+  getLastVisitedDocument,
   getDocumentById,
   updateDocument,
   deleteDocument
@@ -17,6 +18,7 @@ router.use(requireAuth);
 
 router.post('/', createDocument);
 router.get('/', getDocuments);
+router.get('/last-visited', getLastVisitedDocument);
 router.get('/:id', requireDocumentOwnership, getDocumentById);
 router.put('/:id', requireDocumentOwnership, updateDocument);
 router.delete('/:id', requireDocumentOwnership, deleteDocument);

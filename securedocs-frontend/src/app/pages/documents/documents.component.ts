@@ -11,6 +11,7 @@ import { DocumentService } from '../../core/services/document.service';
 })
 export class DocumentsComponent implements OnInit {
   documents: any[] = [];
+  lastVisitedDocument: any | null = null;
   error = '';
 
   constructor(
@@ -19,12 +20,28 @@ export class DocumentsComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.loadDocuments();
+    await this.loadDashboard();
+  }
+
+  async loadDashboard(): Promise<void> {
+    try {
+      const [documents, lastVisitedDocument] = await Promise.all([
+        this.documentService.getAll(),
+        this.documentService.getLastVisited()
+      ]);
+
+      this.documents = documents;
+      this.lastVisitedDocument = lastVisitedDocument;
+      this.error = '';
+    } catch (err: any) {
+      this.error = err?.error?.message || 'Failed to load documents';
+    }
   }
 
   async loadDocuments(): Promise<void> {
     try {
       this.documents = await this.documentService.getAll();
+      this.error = '';
     } catch (err: any) {
       this.error = err?.error?.message || 'Failed to load documents';
     }
